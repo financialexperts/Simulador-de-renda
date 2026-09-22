@@ -13,7 +13,9 @@
   // risk: 0 a 3, quantas barrinhas do medidor de risco ficam acesas (0 = sem
   //   medidor).
   // kind: que tipo de fonte é; decide as frases da análise do resultado
-  //   (result.js).
+  //   (result.js) e a cor do quadrinho do ícone (icons.js).
+  // icon: o desenho do quadrinho da opção, no cartão, no resultado e na
+  //   pandemia (os nomes estão em frontend/js/icons.js).
   //
   // before / after: a renda real do mês nos primeiros meses e depois da
   //   pandemia. Recebem o valor aplicado (só faz diferença nas ajustáveis).
@@ -30,6 +32,7 @@
       label: "Opção 1",
       title: "Trabalhar 8h/dia na Empresa 1 com salário fixo",
       kind: "salario",
+      icon: "predio",
       hours: 10,
       hoursLabel: "8h de trabalho + 2h de locomoção",
       invest: 0,
@@ -45,6 +48,7 @@
       label: "Opção 2",
       title: "Investimento de baixo risco, rendendo 0,4% ao mês",
       kind: "investimento",
+      icon: "escudo",
       hours: 0,
       hoursLabel: "Não ocupa horas do dia",
       invest: "ajustavel",
@@ -61,6 +65,7 @@
       label: "Opção 3",
       title: "Investimento de médio risco, rendendo 1,5% ao mês (média dos últimos 12 meses)",
       kind: "investimento",
+      icon: "grafico",
       hours: 0,
       hoursLabel: "Não ocupa horas do dia",
       invest: "ajustavel",
@@ -77,6 +82,7 @@
       label: "Opção 4",
       title: "Abrir loja própria de bolos (reforma, equipamentos e funcionários)",
       kind: "empreendimento",
+      icon: "loja",
       hours: 10,
       hoursLabel: "10h por dia",
       invest: 30000,
@@ -93,6 +99,7 @@
       label: "Opção 5",
       title: "Trabalhar na Empresa 2 por 4h/dia com salário fixo",
       kind: "salario",
+      icon: "maleta",
       hours: 5,
       hoursLabel: "4h de trabalho + 1h de locomoção",
       invest: 0,
@@ -108,6 +115,7 @@
       label: "Opção 6",
       title: "Trabalhar na Empresa 3 por 4h/dia: fixo de R$ 1.000 + comissão de R$ 2.000 a R$ 6.000",
       kind: "comissao",
+      icon: "comissao",
       hours: 5,
       hoursLabel: "4h de trabalho + 1h de locomoção",
       invest: 0,
@@ -124,6 +132,7 @@
       label: "Opção 7",
       title: "Fazer bolos em casa como renda extra (5h/dia): R$ 10.000 em maquinário + venda pelo Instagram",
       kind: "empreendimento",
+      icon: "bolo",
       hours: 5,
       hoursLabel: "5h por dia",
       invest: 10000,

@@ -3,6 +3,7 @@
 
   var Sim = global.Simulation;
   var Format = global.Format;
+  var Icons = global.Icons;
 
   // O elemento surpresa. O botão que revela fica escondido de propósito no pé
   // do resultado, com cara de "dados complementares", pra a pandemia pegar a
@@ -18,7 +19,8 @@
     var before = Sim.beforeOf(opt);
     var after = Sim.afterOf(opt);
     var dir = after < before ? "down" : after > before ? "up" : "same";
-    return '<li class="ledger__row">' +
+    return '<li class="ledger__row fx">' +
+      Icons.optionTile(opt, "itile--sm") +
       '<div class="ledger__main">' +
         '<p class="ledger__badge">' + Format.esc(opt.label) + "</p>" +
         '<p class="ledger__title">' + Format.esc(opt.title) + "</p>" +
@@ -45,7 +47,8 @@
     var t = Sim.totals();
     var diff = Math.round((t.after - t.before) * 100) / 100;
 
-    el("pd-total").className = "pdtotal " + (diff < 0 ? "is-down" : diff > 0 ? "is-up" : "is-same");
+    el("pd-total").className = "pdtotal fx " + (diff < 0 ? "is-down" : diff > 0 ? "is-up" : "is-same");
+    el("pd-total-ico").innerHTML = Icons.svg(diff < 0 ? "queda" : diff > 0 ? "grafico" : "igual");
     el("pd-total-value").textContent = Format.money(t.after);
     el("pd-total-delta").textContent = deltaText(diff, t.before);
     el("pd-list").innerHTML = Sim.chosen().map(rowHTML).join("");
@@ -55,7 +58,7 @@
     var btn = el("btn-pandemic");
     btn.disabled = true;
     btn.classList.add("is-loading");
-    btn.textContent = "Carregando…";
+    el("btn-pandemic-label").textContent = "Carregando…";
 
     timer = setTimeout(function () {
       render();
@@ -72,7 +75,7 @@
     var btn = el("btn-pandemic");
     btn.disabled = false;
     btn.classList.remove("is-loading");
-    btn.textContent = LABEL;
+    el("btn-pandemic-label").textContent = LABEL;
     el("res-surprise").hidden = false;
     el("sec-pandemic").hidden = true;
   }

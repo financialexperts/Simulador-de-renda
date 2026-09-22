@@ -33,28 +33,49 @@
 
 <main class="wrap">
 
-  <div class="hero">
-    <h1>Qual é a melhor combinação de renda para a Laura?</h1>
-    <p>Escolha as fontes de renda respeitando o capital e as horas que ela tem por dia. Depois, veja quanto a combinação rendeu de verdade nos primeiros meses.</p>
-  </div>
+  <!-- ============ A LAURA E O PONTO DE PARTIDA ============ -->
+  <!-- os valores vêm de backend/js/scenario.js e as falas do balão do app.js;
+       os ícones com data-icon são desenhados pelo icons.js -->
+  <section class="card intro" aria-labelledby="intro-title">
+    <div class="intro__text">
+      <p class="card__kicker intro__tag"><span data-icon="faisca"></span>Desafio da renda</p>
+      <h1 id="intro-title">Qual é a melhor combinação de renda para a Laura?</h1>
+      <p class="intro__lead">Escolha as fontes de renda respeitando o capital e as horas que ela tem por dia. Depois, veja quanto a combinação rendeu de verdade nos primeiros meses.</p>
 
-  <!-- ============ O PONTO DE PARTIDA ============ -->
-  <!-- os valores vêm de backend/js/scenario.js (o app.js preenche) -->
-  <section class="card scenario" aria-labelledby="sc-title">
-    <p class="card__kicker" id="sc-title">O ponto de partida da Laura</p>
-    <div class="scenario__grid">
-      <div class="fact">
-        <p class="fact__label">Capital disponível</p>
-        <p class="fact__value" id="sc-capital">—</p>
+      <p class="card__kicker intro__kicker" id="sc-title">O ponto de partida da Laura</p>
+      <div class="scenario__grid" role="group" aria-labelledby="sc-title">
+        <div class="fact fx">
+          <span class="itile itile--green" data-icon="moedas"></span>
+          <div class="fact__body">
+            <p class="fact__label">Capital disponível</p>
+            <p class="fact__value" id="sc-capital">—</p>
+          </div>
+        </div>
+        <div class="fact fx">
+          <span class="itile itile--violet" data-icon="relogio"></span>
+          <div class="fact__body">
+            <p class="fact__label">Horas por dia</p>
+            <p class="fact__value" id="sc-hours">—</p>
+          </div>
+        </div>
+        <div class="fact fx">
+          <span class="itile itile--pink" data-icon="alvo"></span>
+          <div class="fact__body">
+            <p class="fact__label">Objetivo</p>
+            <p class="fact__value" id="sc-goal">—</p>
+          </div>
+        </div>
       </div>
-      <div class="fact">
-        <p class="fact__label">Horas por dia</p>
-        <p class="fact__value" id="sc-hours">—</p>
+    </div>
+
+    <div class="intro__laura">
+      <div class="bubble" id="laura-bubble">
+        <p class="bubble__text" id="laura-fala" aria-live="polite"></p>
+        <p class="bubble__hint" aria-hidden="true">Toque em mim</p>
       </div>
-      <div class="fact">
-        <p class="fact__label">Objetivo</p>
-        <p class="fact__value" id="sc-goal">—</p>
-      </div>
+      <button class="laura" id="laura" type="button" aria-label="Falar com a Laura" title="Toque na Laura">
+        <img src="frontend/img/laura.webp" alt="" width="560" height="975">
+      </button>
     </div>
   </section>
 
@@ -62,22 +83,25 @@
   <!-- os medidores grudam no alto só dentro desta seção: quando o resultado
        aparece embaixo, eles saem junto com a lista -->
   <section class="sim" aria-labelledby="op-title">
-    <div class="sim__head">
-      <h2 class="invcard__title" id="op-title">Opções disponíveis</h2>
-      <p class="invcard__sub">Toque numa opção para incluir ou tirar da combinação. Nos investimentos, você escolhe quanto aplicar.</p>
+    <div class="sim__head head fx">
+      <span class="itile itile--green itile--lg" data-icon="ajustes"></span>
+      <div>
+        <h2 class="invcard__title" id="op-title">Opções disponíveis</h2>
+        <p class="invcard__sub">Toque numa opção para incluir ou tirar da combinação. Nos investimentos, você escolhe quanto aplicar.</p>
+      </div>
     </div>
 
     <div class="meters" id="meters">
-      <div class="meter" id="meter-money">
+      <div class="meter meter--money fx" id="meter-money">
         <div class="meter__top">
-          <p class="meter__label">Capital usado</p>
+          <p class="meter__label"><span class="meter__ico" data-icon="moedas"></span>Capital usado</p>
           <p class="meter__nums"><span class="meter__used" id="meter-money-used">R$ 0</span> / <span id="meter-money-max"></span></p>
         </div>
         <span class="meter__track" aria-hidden="true"><span class="meter__fill" id="meter-money-fill"></span></span>
       </div>
-      <div class="meter" id="meter-hours">
+      <div class="meter meter--hours fx" id="meter-hours">
         <div class="meter__top">
-          <p class="meter__label">Horas usadas</p>
+          <p class="meter__label"><span class="meter__ico" data-icon="relogio"></span>Horas usadas</p>
           <p class="meter__nums"><span class="meter__used" id="meter-hours-used">0h</span> / <span id="meter-hours-max"></span></p>
         </div>
         <span class="meter__track" aria-hidden="true"><span class="meter__fill" id="meter-hours-fill"></span></span>
@@ -88,38 +112,52 @@
     <div class="optlist" id="options"></div>
 
     <div class="actions">
-      <button class="btn btn--ghost glass" type="button" id="btn-reset">Reiniciar simulação</button>
-      <button class="btn btn--primary glass" type="button" id="btn-reveal">Revelar resultado dos primeiros meses</button>
+      <button class="btn btn--ghost glass fx" type="button" id="btn-reset"><span data-icon="recomecar"></span>Reiniciar simulação</button>
+      <button class="btn btn--primary glass fx" type="button" id="btn-reveal"><span data-icon="foguete"></span>Revelar resultado dos primeiros meses</button>
     </div>
   </section>
 
   <!-- ============ RESULTADO ============ -->
   <section class="card invcard panel" id="sec-result" tabindex="-1" aria-labelledby="res-title" hidden>
-    <p class="card__kicker">Primeiros meses</p>
-    <h2 class="invcard__title" id="res-title">Resultado da combinação</h2>
-    <p class="invcard__sub">Quanto cada fonte de renda rendeu de verdade.</p>
+    <div class="head fx">
+      <span class="itile itile--green itile--lg" data-icon="barras"></span>
+      <div>
+        <p class="card__kicker">Primeiros meses</p>
+        <h2 class="invcard__title" id="res-title">Resultado da combinação</h2>
+        <p class="invcard__sub">Quanto cada fonte de renda rendeu de verdade.</p>
+      </div>
+    </div>
 
     <div class="stats" id="res-stats"></div>
     <ul class="ledger" id="res-list"></ul>
-    <div class="insight" id="res-insight"></div>
+    <div class="insight fx" id="res-insight"></div>
 
     <!-- discreto de propósito: é a porta para o elemento surpresa (pandemic.js) -->
     <div class="surprise" id="res-surprise">
       <p class="surprise__text">A simulação está completa. Se quiser explorar variáveis extras…</p>
-      <button class="btn-quiet" type="button" id="btn-pandemic">Carregar dados complementares</button>
+      <button class="btn-quiet" type="button" id="btn-pandemic"><span class="btn-quiet__ico" data-icon="dados"></span><span id="btn-pandemic-label">Carregar dados complementares</span></button>
     </div>
   </section>
 
   <!-- ============ ELEMENTO SURPRESA ============ -->
   <section class="card invcard panel pandemic" id="sec-pandemic" tabindex="-1" aria-labelledby="pd-title" hidden>
-    <p class="card__kicker pandemic__kicker">Elemento surpresa</p>
-    <h2 class="invcard__title" id="pd-title">A pandemia chegou</h2>
-    <p class="invcard__sub">O mundo mudou da noite para o dia. Como ficou a renda da Laura?</p>
+    <div class="head fx">
+      <span class="itile itile--red itile--lg" data-icon="virus"></span>
+      <div>
+        <p class="card__kicker pandemic__kicker">Elemento surpresa</p>
+        <h2 class="invcard__title" id="pd-title">A pandemia chegou</h2>
+        <p class="invcard__sub">O mundo mudou da noite para o dia. Como ficou a renda da Laura?</p>
+      </div>
+    </div>
 
+    <!-- o ícone (desce, sobe ou igual) e a cor vêm do pandemic.js -->
     <div class="pdtotal" id="pd-total">
-      <p class="pdtotal__label">Renda mensal após a pandemia</p>
-      <p class="pdtotal__value" id="pd-total-value"></p>
-      <p class="pdtotal__delta" id="pd-total-delta"></p>
+      <span class="itile itile--lg pdtotal__ico" id="pd-total-ico" aria-hidden="true"></span>
+      <div>
+        <p class="pdtotal__label">Renda mensal após a pandemia</p>
+        <p class="pdtotal__value" id="pd-total-value"></p>
+        <p class="pdtotal__delta" id="pd-total-delta"></p>
+      </div>
     </div>
     <ul class="ledger" id="pd-list"></ul>
   </section>
@@ -145,6 +183,7 @@
 <script src="backend/js/scenario.js"></script>
 <script src="backend/js/incomeOptions.js"></script>
 <script src="frontend/js/format.js"></script>
+<script src="frontend/js/icons.js"></script>
 <script src="frontend/js/simulation.js"></script>
 <script src="frontend/js/toast.js"></script>
 <script src="frontend/js/options.js"></script>

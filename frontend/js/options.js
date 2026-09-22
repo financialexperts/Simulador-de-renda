@@ -6,9 +6,18 @@
   var Sim = global.Simulation;
   var Format = global.Format;
   var Toast = global.Toast;
+  var Icons = global.Icons;
 
   var root = null;       // o container dos cartões
   var onChange = null;   // avisa o app que a combinação mudou (o resultado na tela deixa de valer)
+
+  // o tipo da opção (o "kind"), no alto do cartão ao lado do número
+  var KIND_LABEL = {
+    salario: "Salário fixo",
+    comissao: "Fixo + comissão",
+    investimento: "Investimento",
+    empreendimento: "Negócio próprio"
+  };
 
   /* ============ textos de cada cartão ============ */
   function estimateText(opt) {
@@ -26,7 +35,7 @@
 
   function riskHTML(opt) {
     if (!opt.risk) return "";
-    return '<span class="risk risk--' + opt.risk + '">' +
+    return '<span class="tag risk risk--' + opt.risk + '">' +
       '<span class="risk__bars" aria-hidden="true"><span class="risk__bar"></span><span class="risk__bar"></span><span class="risk__bar"></span></span>' +
       '<span class="risk__label">' + Format.esc(opt.riskLabel) + "</span>" +
       "</span>";
@@ -54,24 +63,32 @@
 
   // O cartão todo (menos o quadro do investimento) é um botão: tocar nele
   // inclui ou tira a opção. aria-pressed diz ao leitor de tela se ela está
-  // na combinação.
+  // na combinação; o "Incluir / Incluída" é o mesmo aviso pra quem vê (por
+  // isso fica escondido do leitor de tela, que já ouve o aria-pressed).
   function cardHTML(opt) {
-    return '<div class="optcard" data-id="' + opt.id + '">' +
+    var kind = KIND_LABEL[opt.kind];
+    return '<div class="optcard fx" data-id="' + opt.id + '">' +
       '<button class="optcard__toggle" type="button" aria-pressed="false" data-toggle="' + opt.id + '">' +
-        '<span class="optcard__check" aria-hidden="true"></span>' +
+        Icons.optionTile(opt, "optcard__icon") +
         '<span class="optcard__main">' +
-          '<span class="optcard__badge">' + Format.esc(opt.label) + "</span>" +
+          '<span class="optcard__badge">' + Format.esc(opt.label) +
+            (kind ? '<span class="optcard__kind"> · ' + Format.esc(kind) + "</span>" : "") + "</span>" +
           '<span class="optcard__title">' + Format.esc(opt.title) + "</span>" +
           '<span class="optcard__tags">' +
-            '<span class="tag">' + Format.esc(opt.hoursLabel) + "</span>" +
-            '<span class="tag">' + Format.esc(investTagText(opt)) + "</span>" +
+            '<span class="tag">' + Icons.svg("relogio") + Format.esc(opt.hoursLabel) + "</span>" +
+            '<span class="tag">' + Icons.svg("moedas") + Format.esc(investTagText(opt)) + "</span>" +
             riskHTML(opt) +
           "</span>" +
         "</span>" +
         '<span class="optcard__income">' +
-          '<span class="optcard__incomelabel">Renda estimada</span>' +
-          '<span class="optcard__incomevalue" data-income="' + opt.id + '"></span>' +
-          '<span class="optcard__incomeunit">por mês</span>' +
+          '<span class="optcard__price">' +
+            '<span class="optcard__incomelabel">Renda estimada</span>' +
+            '<span class="optcard__incomevalue" data-income="' + opt.id + '"></span>' +
+            '<span class="optcard__incomeunit">por mês</span>' +
+          "</span>" +
+          '<span class="optcard__pick" aria-hidden="true">' +
+            '<span class="optcard__pick-off">Incluir</span><span class="optcard__pick-on">Incluída</span>' +
+          "</span>" +
         "</span>" +
       "</button>" +
       investHTML(opt) +

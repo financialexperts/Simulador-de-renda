@@ -4,6 +4,7 @@
   var S = global.Scenario;
   var Sim = global.Simulation;
   var Format = global.Format;
+  var Icons = global.Icons;
 
   // Uma frase por tipo de fonte de renda presente na combinação (o "kind" de
   // backend/js/incomeOptions.js). Tipo sem frase aqui só não comenta nada.
@@ -13,9 +14,9 @@
     empreendimento: "A atividade empreendedora traz <strong>alto potencial de ganho</strong>, mas risco maior."
   };
 
-  function statHTML(label, value, sub, highlight) {
-    return '<div class="stat' + (highlight ? " stat--hl" : "") + '">' +
-      '<p class="stat__label">' + label + "</p>" +
+  function statHTML(icon, tone, label, value, sub, highlight) {
+    return '<div class="stat fx' + (highlight ? " stat--hl" : "") + '">' +
+      '<p class="stat__label">' + Icons.tile(icon, tone, "itile--xs") + label + "</p>" +
       '<p class="stat__value">' + value + "</p>" +
       '<p class="stat__sub">' + sub + "</p>" +
       "</div>";
@@ -23,7 +24,8 @@
 
   function rowHTML(opt) {
     var v = Sim.investOf(opt);
-    return '<li class="ledger__row">' +
+    return '<li class="ledger__row fx">' +
+      Icons.optionTile(opt, "itile--sm") +
       '<div class="ledger__main">' +
         '<p class="ledger__badge">' + Format.esc(opt.label) + "</p>" +
         '<p class="ledger__title">' + Format.esc(opt.title) + "</p>" +
@@ -50,7 +52,7 @@
       if (kinds.indexOf(k) > -1) txt += INSIGHTS[k] + " ";
     });
 
-    return '<p class="insight__title">Análise da sua escolha</p>' +
+    return '<p class="insight__title">' + Icons.tile("lampada", "amber", "itile--xs") + "Análise da sua escolha</p>" +
       "<p>" + txt.trim() + "</p>" +
       '<p class="insight__hook">Mas será que a situação se manteve? Continue para descobrir…</p>';
   }
@@ -60,10 +62,10 @@
     var t = Sim.totals();
 
     document.getElementById("res-stats").innerHTML =
-      statHTML("Renda mensal real", Format.money(t.before), "nos primeiros meses", true) +
-      statHTML("Capital investido", Format.money(t.invest), "de " + Format.compactMoney(S.capital) + " disponíveis") +
-      statHTML("Horas por dia", t.hours + "h", "de " + S.hours + "h disponíveis") +
-      statHTML("Fontes ativas", String(t.count), t.count === 1 ? "fonte única" : "combinadas");
+      statHTML("cifrao", "green", "Renda mensal real", Format.money(t.before), "nos primeiros meses", true) +
+      statHTML("moedas", "blue", "Capital investido", Format.money(t.invest), "de " + Format.compactMoney(S.capital) + " disponíveis") +
+      statHTML("relogio", "violet", "Horas por dia", t.hours + "h", "de " + S.hours + "h disponíveis") +
+      statHTML("camadas", "pink", "Fontes ativas", String(t.count), t.count === 1 ? "fonte única" : "combinadas");
 
     document.getElementById("res-list").innerHTML = list.map(rowHTML).join("");
     document.getElementById("res-insight").innerHTML = insightHTML(list, t);

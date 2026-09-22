@@ -37,13 +37,64 @@
     el.style.setProperty("--gy", ((e.clientY - r.top) / r.height * 100) + "%");
   });
 
+  /* ============ ícones animados ============ */
+  // Tudo o que tem a classe .fx anima o próprio ícone quando o mouse entra,
+  // quando é tocado (no celular não existe "passar o mouse") ou quando recebe
+  // o foco do teclado. A animação de cada ícone está no styles.css; aqui só
+  // se liga e desliga o .is-poked que dispara ela.
+  var semAnimacao = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  window.Icons.mount(document);
+
+  function cutucar(el) {
+    if (!el || el.classList.contains("is-poked")) return;
+    el.classList.add("is-poked");
+    setTimeout(function () { el.classList.remove("is-poked"); }, 900);
+  }
+  function fxDe(e) { return e.target.closest && e.target.closest(".fx"); }
+
+  document.addEventListener("pointerover", function (e) {
+    if (e.pointerType !== "mouse") return;
+    var el = fxDe(e);
+    // só quando o mouse entra de fora, não a cada filho por onde ele passa
+    if (el && !(e.relatedTarget && el.contains(e.relatedTarget))) cutucar(el);
+  });
+  document.addEventListener("pointerdown", function (e) { cutucar(fxDe(e)); });
+  document.addEventListener("focusin", function (e) { cutucar(fxDe(e)); });
+
+  /* ============ a Laura ============ */
+  // Tocar na Laura faz ela dar um pulinho e dizer a próxima frase do balão.
+  var FALAS = [
+    "Oi! Eu sou a " + S.person + ". Me ajuda a escolher?",
+    "Tenho " + Format.compactMoney(S.capital) + " e " + S.hours + " horas por dia.",
+    "Dá pra juntar mais de uma opção!",
+    "Mas o dinheiro e as horas têm limite, hein?"
+  ];
+  var fala = 0;
+  var laura = document.getElementById("laura");
+  var balao = document.getElementById("laura-bubble");
+  var balaoTexto = document.getElementById("laura-fala");
+
+  balaoTexto.textContent = FALAS[0];
+  laura.addEventListener("click", function () {
+    fala = (fala + 1) % FALAS.length;
+    balaoTexto.textContent = FALAS[fala];
+    // o "toque em mim" já cumpriu o papel depois do primeiro toque
+    balao.classList.add("is-known");
+    // tira e põe a classe pra a animação repetir a cada toque
+    [laura, balao].forEach(function (el) {
+      el.classList.remove("is-talking");
+      void el.offsetWidth;
+      el.classList.add("is-talking");
+    });
+  });
+
   /* ============ o ponto de partida ============ */
   document.getElementById("sc-capital").textContent = Format.compactMoney(S.capital);
   document.getElementById("sc-hours").textContent = S.hours + " horas";
   document.getElementById("sc-goal").textContent = S.goal;
 
   /* ============ navegação ============ */
-  var semAnimacao = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   // leva a tela até a parte que acabou de aparecer (o scroll-margin-top do
   // CSS desconta a barra do topo) e põe o foco nela, pra o leitor de tela
