@@ -128,16 +128,19 @@
   }
 
   // medidores de capital e de horas: laranja quando chegam no limite
-  function syncMeter(key, value, max, text) {
+  function syncMeter(key, value, max, html) {
     var pct = max > 0 ? Math.min(value / max * 100, 100) : 0;
-    document.getElementById("meter-" + key + "-used").textContent = text;
+    document.getElementById("meter-" + key + "-used").innerHTML = html;
     document.getElementById("meter-" + key + "-fill").style.width = pct + "%";
     document.getElementById("meter-" + key).classList.toggle("is-full", value >= max);
   }
 
   function syncMeters() {
     var u = Sim.used();
-    syncMeter("money", u.money, S.capital, Format.compactMoney(u.money));
+    // o "R$" do usado também some, mas só no celular bem estreito (styles.css).
+    // O format.js separa o "R$" com espaço inquebrável: o \s pega os dois.
+    syncMeter("money", u.money, S.capital,
+      '<span class="meter__cur meter__cur--used">R$ </span>' + Format.compactMoney(u.money).replace(/^R\$\s/, ""));
     syncMeter("hours", u.hours, S.hours, u.hours + "h");
   }
 

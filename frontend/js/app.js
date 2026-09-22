@@ -42,6 +42,10 @@
   // quando é tocado (no celular não existe "passar o mouse") ou quando recebe
   // o foco do teclado. A animação de cada ícone está no styles.css; aqui só
   // se liga e desliga o .is-poked que dispara ela.
+  //
+  // No toque, a animação sai quando o dedo levanta (pointerup), e não quando
+  // encosta: se o dedo encostou pra rolar a página, o navegador cancela o
+  // toque (pointercancel), o pointerup não vem e nada chacoalha no caminho.
   var semAnimacao = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   window.Icons.mount(document);
@@ -59,13 +63,18 @@
     // só quando o mouse entra de fora, não a cada filho por onde ele passa
     if (el && !(e.relatedTarget && el.contains(e.relatedTarget))) cutucar(el);
   });
-  document.addEventListener("pointerdown", function (e) { cutucar(fxDe(e)); });
+  document.addEventListener("pointerdown", function (e) {
+    if (e.pointerType === "mouse") cutucar(fxDe(e));
+  });
+  document.addEventListener("pointerup", function (e) {
+    if (e.pointerType !== "mouse") cutucar(fxDe(e));
+  });
   document.addEventListener("focusin", function (e) { cutucar(fxDe(e)); });
 
   /* ============ a Laura ============ */
   // Tocar na Laura faz ela dar um pulinho e dizer a próxima frase do balão.
   var FALAS = [
-    "Oi! Eu sou a " + S.person + ". Me ajuda a escolher?",
+    "Oi! Eu sou a " + S.person + ". Me ajude a escolher?",
     "Tenho " + Format.compactMoney(S.capital) + " e " + S.hours + " horas por dia.",
     "Dá pra juntar mais de uma opção!",
     "Mas o dinheiro e as horas têm limite, hein?"

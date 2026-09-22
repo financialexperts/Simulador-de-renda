@@ -1,4 +1,7 @@
-# Simulador de Renda – Laura
+
+| As falas do balão da Laura | `FALAS`, no `frontend/js/app.js` |
+| O ícone de uma opção | `icon`, no `backend/js/incomeOptions.js` (os desenhos ficam no `frontend/js/icons.js`) |
+| A cor do ícone de cada tipo de opção | `KIND_TONE`, no `frontend/js/icons.js` |# Simulador de Renda – Laura
 
 Simulação em que o aluno escolhe como a Laura vai gerar renda, com R$ 30.000 de capital e 10 horas por dia. Ele combina fontes de renda (salário, investimentos, negócio próprio) e vê quanto cada combinação rendeu. Depois, um elemento surpresa mostra o que aconteceu com essa renda na pandemia.
 
@@ -8,9 +11,9 @@ Não tem build, instalação nem banco de dados: é `index.html` + alguns arquiv
 
 ## O caminho do aluno
 
-1. **O ponto de partida.** Um cartão no topo mostra o que a Laura tem: capital, horas por dia e objetivo.
+1. **O ponto de partida.** A Laura abre a tela num cartão com um balão de fala: tocando nela, ela dá um pulinho e diz outra frase. O mesmo cartão mostra o que ela tem: capital, horas por dia e objetivo.
 
-2. **Montar a combinação.** São 7 opções, e cada uma é um cartão que o aluno toca para incluir ou tirar da combinação. Os dois investimentos (Opções 2 e 3) têm valor ajustável: um campo em reais e um controle deslizante que vai só até o capital que ainda sobra.
+2. **Montar a combinação.** São 7 opções, e cada uma é um cartão que o aluno toca para incluir ou tirar da combinação. Cada cartão tem o ícone da opção, colorido pelo tipo (emprego em roxo, investimento em azul, negócio próprio em rosa), e um "Incluir / Incluída" que diz se ela está na combinação. Os dois investimentos (Opções 2 e 3) têm valor ajustável: um campo em reais e um controle deslizante que vai só até o capital que ainda sobra.
 
    Enquanto ele escolhe, dois medidores (capital usado e horas usadas) ficam grudados no alto da tela. Quando um deles chega no limite, fica laranja.
 
@@ -66,18 +69,23 @@ A Opção 3 depois da pandemia fica **negativa**, porque o que era rendimento vi
 index.html                      a tela: cenário, opções, resultado e pandemia
 frontend/
   css/styles.css                todo o visual (identidade Financial Experts)
-  img/                          logos e favicon
+  img/                          logos, favicon e a Laura (laura.webp, já sem
+                                fundo; Laura.jpg é a original)
   js/format.js                  formatação de dinheiro e leitura do que foi digitado
+  js/icons.js                   os desenhos dos ícones e o quadrinho colorido de cada opção
   js/simulation.js              o estado da simulação e as regras de combinação
   js/toast.js                   o aviso de quando uma escolha não cabe
   js/options.js                 os cartões das opções, os valores ajustáveis e os medidores
   js/result.js                  o resultado dos primeiros meses e a análise da escolha
   js/pandemic.js                o elemento surpresa: a renda depois da pandemia
-  js/app.js                     tema claro/escuro, botões principais, liga tudo
+  js/app.js                     tema claro/escuro, a Laura, as animações dos ícones,
+                                botões principais, liga tudo
 backend/
   js/scenario.js                o ponto de partida da Laura: capital, horas e objetivo
   js/incomeOptions.js           as 7 opções, com a renda antes e depois da pandemia
 ```
+
+Os ícones de todas as partes da tela se mexem quando o mouse passa, quando o aluno toca neles ou quando recebem o foco do teclado. No celular, só um toque de verdade anima: passar o dedo para rolar a página não mexe em nada. Quem pede menos movimento no sistema operacional não vê animação nenhuma.
 
 Os dois arquivos em `backend/js/` não tocam no DOM: são só dados. O `simulation.js` também não. É ele que guarda o que foi escolhido e aplica as regras, e as telas só leem dele.
 
@@ -96,7 +104,7 @@ Os dois arquivos em `backend/js/` não tocam no DOM: são só dados. O `simulati
 
 Os avisos e os medidores leem o capital e as horas de `scenario.js`: mudando lá, os textos acompanham.
 
-Cada opção tem um `kind` (`salario`, `investimento`, `empreendimento` ou `comissao`) que decide as frases da análise, e um `impact` (`manteve`, `atencao` ou `grave`) que decide o ícone e a cor da nota na pandemia.
+Cada opção tem um `kind` (`salario`, `investimento`, `empreendimento` ou `comissao`) que decide as frases da análise e a cor do ícone, e um `impact` (`manteve`, `atencao` ou `grave`) que decide o ícone e a cor da nota na pandemia.
 
 ---
 

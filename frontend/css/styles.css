@@ -116,8 +116,12 @@ input{font:inherit}
   opacity:0;
   transition:opacity .35s;
 }
-.glass:hover::after{opacity:.28}
-.glass:hover{box-shadow:var(--shadow)}
+/* os efeitos de "mouse em cima" só onde existe mouse: no toque o navegador
+   deixa o :hover grudado depois do toque */
+@media (hover:hover){
+  .glass:hover::after{opacity:.28}
+  .glass:hover{box-shadow:var(--shadow)}
+}
 .glass:active{transform:scale(.97)}
 
 /* ---------- Topbar ---------- */
@@ -220,9 +224,9 @@ input{font:inherit}
 .btn [data-icon]{flex:none}
 .btn .ico{width:18px;height:18px}
 .btn--primary{background:var(--accent);border-color:var(--accent);color:var(--accent-contrast)}
-.btn--primary:hover{background:var(--accent-hover);border-color:var(--accent-hover)}
+@media (hover:hover){.btn--primary:hover{background:var(--accent-hover);border-color:var(--accent-hover)}}
 .btn--primary:disabled{opacity:.6;cursor:default}
-.btn--ghost:hover{border-color:var(--line-strong);background:var(--surface-2)}
+@media (hover:hover){.btn--ghost:hover{border-color:var(--line-strong);background:var(--surface-2)}}
 
 /* ---------- Abertura: a Laura e o ponto de partida ---------- */
 /* A Laura fica em pé na borda de baixo do cartão, com a cabeça passando por
@@ -238,11 +242,11 @@ input{font:inherit}
 .intro__kicker{margin-top:26px}
 
 .intro__laura{position:relative;align-self:end;margin-top:-92px;clip-path:inset(-400px -400px 0 -400px)}
-/* o círculo colorido atrás dela */
-.intro__laura::before{content:"";position:absolute;left:50%;bottom:150px;width:250px;height:250px;margin-left:-125px;border-radius:50%;background:linear-gradient(150deg,var(--pink-soft),var(--accent-soft) 70%);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--pink) 12%,transparent)}
 .laura{position:relative;z-index:1;display:block;width:100%;padding:0;border:0;background:none;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;border-radius:28px 28px 0 0}
+/* o círculo colorido atrás dela, em proporção ao tamanho dela */
+.laura::before{content:"";position:absolute;z-index:-1;left:4%;top:12%;width:92%;aspect-ratio:1;border-radius:50%;background:linear-gradient(150deg,var(--pink-soft),var(--accent-soft) 70%);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--pink) 12%,transparent)}
 .laura img{display:block;width:100%;height:auto;margin-bottom:-12%;transform-origin:50% 100%;transition:transform .35s var(--spring);animation:laura-in .8s var(--spring) both}
-.laura:hover img{transform:translateY(-4px) rotate(-1.5deg)}
+@media (hover:hover){.laura:hover img{transform:translateY(-4px) rotate(-1.5deg)}}
 .laura.is-talking img{animation:laura-hop .65s var(--spring)}
 @keyframes laura-in{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
 @keyframes laura-hop{0%{transform:none}30%{transform:translateY(-14px) rotate(-2deg)}55%{transform:translateY(0) scale(1.02,.98)}75%{transform:translateY(-4px) rotate(1deg)}100%{transform:none}}
@@ -258,7 +262,7 @@ input{font:inherit}
 /* capital e horas são curtos: ficam do tamanho do conteúdo, e o objetivo leva o resto */
 .scenario__grid{display:grid;grid-template-columns:auto auto minmax(0,1fr);gap:10px;margin-top:10px}
 .fact{display:flex;align-items:center;gap:12px;min-width:0;padding:12px 14px;border:1px solid var(--line);border-radius:14px;background:var(--surface-2);transition:border-color .15s,box-shadow .2s}
-.fact:hover{border-color:var(--line-strong);box-shadow:var(--shadow-sm)}
+@media (hover:hover){.fact:hover{border-color:var(--line-strong);box-shadow:var(--shadow-sm)}}
 .fact__body{min-width:0}
 .fact__label{font-family:var(--ff-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
 .fact__value{margin-top:2px;font-family:var(--ff-display);font-weight:700;font-size:19px;letter-spacing:-.02em;line-height:1.15}
@@ -319,11 +323,11 @@ input{font:inherit}
 
 .optlist{display:grid;gap:12px}
 .optcard{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow-sm);transition:border-color .15s,background .15s,box-shadow .2s}
-.optcard:hover{border-color:var(--line-strong);box-shadow:var(--shadow)}
+@media (hover:hover){.optcard:hover{border-color:var(--line-strong);box-shadow:var(--shadow)}}
 /* depois do :hover de propósito (mesma especificidade): escolhida continua
    com a borda de destaque mesmo com o mouse em cima */
 .optcard.is-on{border-color:var(--accent-ink);background:var(--accent-soft);box-shadow:inset 0 0 0 1px var(--accent-ink)}
-.optcard.is-on:hover{box-shadow:inset 0 0 0 1px var(--accent-ink),var(--shadow)}
+@media (hover:hover){.optcard.is-on:hover{box-shadow:inset 0 0 0 1px var(--accent-ink),var(--shadow)}}
 /* o botão ocupa o cartão todo, menos o quadro do investimento */
 .optcard__toggle{width:100%;display:grid;grid-template-columns:auto minmax(0,1fr) 232px;gap:12px 18px;align-items:start;padding:18px 20px;border:0;background:transparent;border-radius:var(--radius);text-align:left;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .optcard__toggle:focus-visible{border-radius:var(--radius)}
@@ -354,7 +358,7 @@ input{font:inherit}
 .optcard__incomeunit{font-size:12.5px;color:var(--muted)}
 .optcard__pick{display:inline-flex;align-items:center;gap:6px;padding:7px 14px 7px 11px;border:1.5px solid var(--line-strong);border-radius:999px;background:var(--surface);font-size:13px;font-weight:600;line-height:1;color:var(--ink-soft);white-space:nowrap;transition:background .15s,border-color .15s,color .15s}
 .optcard__pick::before{content:"";flex:none;width:12px;height:12px;background-color:currentColor;-webkit-mask:var(--icon-plus) center/contain no-repeat;mask:var(--icon-plus) center/contain no-repeat}
-.optcard:hover .optcard__pick{border-color:var(--accent-ink);color:var(--accent-ink)}
+@media (hover:hover){.optcard:hover .optcard__pick{border-color:var(--accent-ink);color:var(--accent-ink)}}
 @keyframes pick-pop{0%{transform:scale(.85)}60%{transform:scale(1.08)}100%{transform:none}}
 .optcard.is-on .optcard__pick{background:var(--accent);border-color:var(--accent);color:var(--accent-contrast);animation:pick-pop .4s var(--spring)}
 .optcard.is-on .optcard__pick::before{-webkit-mask-image:var(--icon-check);mask-image:var(--icon-check)}
@@ -421,7 +425,7 @@ input{font:inherit}
 .surprise__text{font-size:12.5px;color:var(--muted)}
 .btn-quiet{display:inline-flex;align-items:center;gap:8px;margin-top:10px;padding:8px 14px;border:1px dashed var(--line-strong);border-radius:10px;background:transparent;font-family:var(--ff-mono);font-size:12px;letter-spacing:.04em;color:var(--muted);cursor:pointer;transition:color .15s,border-color .15s}
 .btn-quiet__ico .ico{width:14px;height:14px}
-.btn-quiet:hover{border-color:var(--accent-ink);color:var(--accent-ink)}
+@media (hover:hover){.btn-quiet:hover{border-color:var(--accent-ink);color:var(--accent-ink)}}
 .btn-quiet:disabled{cursor:default;color:var(--ink-soft);border-color:var(--line-strong)}
 .btn-quiet.is-loading .btn-quiet__ico{display:none}
 .btn-quiet.is-loading::before{content:"";flex:none;width:12px;height:12px;border-radius:50%;border:2px solid var(--line);border-top-color:var(--accent-ink);animation:spin .8s linear infinite}
@@ -480,8 +484,22 @@ footer{margin-top:46px;border-top:1px solid var(--line);padding:22px 0 40px;font
   .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 
-/* Celular e tablet em pé: a Laura sobe pro alto do cartão, em pé numa linha,
-   com o balão do lado; e a renda de cada opção desce pra baixo do texto. */
+/* Até 1040px a altura do texto da abertura varia e o balão acabaria em cima
+   dele. Então a Laura sobe pro alto do cartão, em pé numa linha, com o balão
+   do lado, e o texto vem embaixo na largura toda. */
+@media (max-width:1040px){
+  .intro{grid-template-columns:minmax(0,1fr);margin-top:72px;padding:0 24px 22px}
+  .intro__laura{order:-1;display:flex;align-items:center;justify-content:center;gap:6px;margin:-56px -24px 0;padding:0 24px}
+  /* a linha onde ela "pisa" fica por cima da imagem (o vestido escondido não cobre) */
+  .intro__laura::after{content:"";position:absolute;z-index:3;left:0;right:0;bottom:0;height:1px;background:var(--line)}
+  .laura{flex:none;width:188px}
+  .bubble{position:relative;top:auto;right:auto;flex:0 1 250px;width:auto;max-width:none;margin-top:56px}
+  .intro__text{padding:20px 0 0}
+  .intro h1{max-width:none}
+}
+
+/* Celular: a Laura e o balão menores; e a renda de cada opção desce pra baixo
+   do texto. */
 @media (max-width:720px){
   :root{--topbar-h:56px}
   .wrap{padding:0 16px}
@@ -490,22 +508,18 @@ footer{margin-top:46px;border-top:1px solid var(--line);padding:22px 0 40px;font
   .actions{flex-direction:column-reverse}
   .btn{padding:13px 14px}
 
-  .intro{grid-template-columns:minmax(0,1fr);margin-top:60px;padding:0 16px 18px}
-  .intro__laura{order:-1;display:flex;align-items:center;justify-content:flex-end;gap:6px;margin:-44px -16px 0;padding:0 12px 0 16px}
-  /* a linha onde ela "pisa" fica por cima da imagem (o vestido escondido não cobre) */
-  .intro__laura::after{content:"";position:absolute;z-index:3;left:0;right:0;bottom:0;height:1px;background:var(--line)}
-  .intro__laura::before{left:auto;right:10px;bottom:22px;width:150px;height:150px;margin-left:0}
-  .laura{flex:none;width:142px}
-  .bubble{position:relative;top:auto;right:auto;flex:0 1 210px;width:auto;max-width:none;margin-top:44px}
-  .intro__text{padding:18px 0 0}
-  .intro h1{margin-top:12px;font-size:clamp(24px,7vw,30px);max-width:none}
+  .intro{margin-top:60px;padding:0 16px 18px}
+  .intro__laura{margin:-44px -16px 0;padding:0 12px 0 16px}
+  .laura{width:142px}
+  .bubble{flex-basis:210px;margin-top:44px}
+  .intro__text{padding-top:18px}
+  .intro h1{margin-top:12px;font-size:clamp(24px,7vw,30px)}
   .intro__lead{font-size:14.5px}
   .intro__kicker{margin-top:20px}
 
   .sim__head{margin-top:36px}
   .head{gap:12px}
   .head .itile--lg{width:42px;height:42px;border-radius:12px}
-  .scenario{padding:16px 16px 18px}
   .invcard{padding:16px 16px 18px}
   /* grudados no alto do celular, os medidores ficam mais baixos */
   .meters{gap:5px;padding:5px;margin:18px -5px 12px}
@@ -520,9 +534,11 @@ footer{margin-top:46px;border-top:1px solid var(--line);padding:22px 0 40px;font
   .optcard__badge{grid-column:2;align-self:end}
   .optcard__title{grid-column:2;margin-top:3px;font-size:16px}
   .optcard__tags{grid-column:1 / -1;margin-top:12px}
-  /* quando a renda é uma faixa longa e não cabe do lado, o "Incluir" desce */
+  /* o "Incluir" fica do lado da renda; o "por mês" desce antes dele, e ele
+     só desce quando nem o valor cabe do lado (flex-basis 0 com a largura
+     mínima do valor, que não quebra) */
   .optcard__income{grid-column:1 / -1;flex-direction:row;flex-wrap:wrap;align-items:center;gap:10px 12px;margin-top:14px;padding:12px 0 0;border-left:0;border-top:1px dashed var(--line-strong)}
-  .optcard__price{flex:1 1 auto;flex-direction:row;flex-wrap:wrap;align-items:baseline;column-gap:6px;min-width:0;text-align:left}
+  .optcard__price{flex:1 1 0;flex-direction:row;flex-wrap:wrap;align-items:baseline;column-gap:6px;text-align:left}
   .optcard__pick{margin-left:auto}
   .optcard__incomelabel{flex-basis:100%}
   .investbox{margin:0 16px 16px}
@@ -535,24 +551,32 @@ footer{margin-top:46px;border-top:1px solid var(--line);padding:22px 0 40px;font
   .meter__ico .ico{width:14px;height:14px}
   .meter__nums{font-size:12px}
   .meter__used{font-size:13.5px}
-  .meter__cur{display:none}
+  .meter__cur:not(.meter__cur--used){display:none}
   .investbox{padding:12px 13px 14px}
   .investbox__input{width:100%}
-  .stat{padding:12px 13px}
-  .stat__value{font-size:18px}
+  /* os números do resultado viram uma lista: o ícone e o rótulo numa linha,
+     o valor e a legenda na de baixo (a legenda desce se não couber) */
+  .stats{grid-template-columns:1fr;gap:8px}
+  .stat{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:10px;padding:11px 13px 12px}
+  .stat__label{flex-basis:100%}
+  .stat__value{margin-top:6px;font-size:19px}
+  .stat__sub{margin-top:0}
   .ledger__row{grid-template-columns:auto minmax(0,1fr);gap:10px 12px}
   .ledger__value,.pdcompare{grid-column:1 / -1}
   .ledger__value{display:flex;align-items:baseline;justify-content:space-between;gap:12px;text-align:left}
   .pdcompare{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;text-align:left}
-  .pdtotal{align-items:flex-start;gap:12px;padding:15px 16px}
-  .pdtotal .itile--lg{width:40px;height:40px;border-radius:12px}
+  /* o ícone vai pra linha do título e o valor ganha a largura toda */
+  .pdtotal{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;column-gap:10px;padding:15px 16px}
+  .pdtotal > div{display:contents}
+  .pdtotal__value,.pdtotal__delta{grid-column:1 / -1}
+  .pdtotal__value{margin-top:8px}
+  .pdtotal .itile--lg{width:34px;height:34px;border-radius:10px}
 }
 @media (max-width:380px){
-  .stats{grid-template-columns:1fr}
-  .stat{display:grid;grid-template-columns:1fr auto;align-items:center;gap:2px 12px}
-  .stat__value{grid-row:1 / span 2;grid-column:2;margin-top:0}
   .meter__label{font-size:9.5px;letter-spacing:.05em}
   /* se ainda não couber, o "/ 30.000" desce pra linha de baixo em vez de vazar */
+  /* celular bem estreito: o usado também perde o "R$" ("15.000 / 30.000") */
+  .meter__cur--used{display:none}
   .meter__nums{font-size:11.5px;white-space:normal}
   .meter__used{font-size:13px;white-space:nowrap}
   /* o balão encosta no cabelo dela pra ganhar largura */
