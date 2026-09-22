@@ -1,0 +1,378 @@
+/* ---------- Design tokens ---------- */
+:root{
+  --bg:#E9E9EE;
+  --bg-grid:rgba(39,34,89,.05);
+  --surface:#FFFFFF;
+  --surface-2:#F9F8FA;
+  --ink:#272259;
+  --ink-soft:#57537E;
+  --muted:#827F9F;
+  --line:#DCDCE4;
+  --line-strong:#BEBDCD;
+  --accent:#2FE39A;
+  --accent-hover:#28C183;
+  --accent-ink:#21867A;
+  --accent-soft:#DFF7EC;
+  --accent-contrast:#151238;
+  --warm:#D97B2B;
+  --warm-soft:#F7E3CE;
+  --danger:#B3322A;
+  --focus:#21867A;
+  --radius:14px;
+  --topbar-h:60px;
+  --shadow-sm:0 1px 2px rgba(39,34,89,.06);
+  --shadow:0 1px 2px rgba(39,34,89,.05), 0 14px 32px -20px rgba(39,34,89,.45);
+  --ff-display:"Bricolage Grotesque","Inter",system-ui,sans-serif;
+  --ff-body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --ff-mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --icon-check:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M3 8.5l3.2 3.2L13 4.5'/%3E%3C/svg%3E");
+  --icon-warning:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round' d='M8 1.6 15 14H1L8 1.6z'/%3E%3Cpath stroke='%23000' stroke-width='1.6' stroke-linecap='round' d='M8 6.4v3.4'/%3E%3Ccircle cx='8' cy='12.1' r='.9' fill='%23000'/%3E%3C/svg%3E");
+}
+[data-theme="dark"]{
+  --bg:#0F0C29;
+  --bg-grid:rgba(60,239,162,.05);
+  --surface:#1D1A43;
+  --surface-2:#171435;
+  --ink:#EDEDF7;
+  --ink-soft:#C7C5E0;
+  --muted:#9E9CB4;
+  --line:#2A2860;
+  --line-strong:#3B3878;
+  --accent:#3CEFA2;
+  --accent-hover:#33CB8A;
+  --accent-ink:#5FF5B7;
+  --accent-soft:#162E3B;
+  --accent-contrast:#0B0920;
+  --warm:#E39B57;
+  --warm-soft:#33251A;
+  --danger:#F08379;
+  --focus:#3CEFA2;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.35);
+  --shadow:0 1px 2px rgba(0,0,0,.35), 0 16px 34px -22px rgba(0,0,0,.9);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  font-family:var(--ff-body);
+  color:var(--ink);
+  background-color:var(--bg);
+  background-image:linear-gradient(var(--bg-grid) 1px,transparent 1px),linear-gradient(90deg,var(--bg-grid) 1px,transparent 1px);
+  background-size:28px 28px;
+  line-height:1.5;
+  font-size:16px;
+  min-height:100vh;
+}
+h1,h2,h3{font-family:var(--ff-display);font-weight:700;letter-spacing:-.02em;margin:0}
+p{margin:0}
+button{font:inherit;color:inherit}
+input{font:inherit}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:6px}
+
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+
+/* ---------- Liquid glass ---------- */
+.glass{
+  position:relative;
+  isolation:isolate;
+  background:color-mix(in srgb,var(--surface) 62%,transparent);
+  backdrop-filter:blur(18px) saturate(160%);
+  -webkit-backdrop-filter:blur(18px) saturate(160%);
+  transition:transform .4s cubic-bezier(.34,1.56,.64,1),background .2s,border-color .2s,box-shadow .25s,color .2s;
+}
+.glass::before,.glass::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none}
+.glass::before{
+  background:linear-gradient(165deg,rgba(255,255,255,.55),rgba(255,255,255,0) 45%);
+  opacity:.5;
+  mix-blend-mode:overlay;
+}
+[data-theme="dark"] .glass::before{opacity:.16}
+.glass::after{
+  background:radial-gradient(160px 160px at var(--gx,50%) var(--gy,40%),color-mix(in srgb,var(--accent) 65%,white),transparent 70%);
+  opacity:0;
+  transition:opacity .35s;
+}
+.glass:hover::after{opacity:.28}
+.glass:hover{box-shadow:var(--shadow)}
+.glass:active{transform:scale(.97)}
+
+/* ---------- Topbar ---------- */
+.topbar{border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--surface) 70%,transparent);backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);position:sticky;top:0;z-index:20;box-shadow:0 1px 0 rgba(255,255,255,.5) inset}
+[data-theme="dark"] .topbar{box-shadow:0 1px 0 rgba(255,255,255,.06) inset}
+.topbar__in{display:flex;align-items:center;gap:14px;min-height:var(--topbar-h)}
+.brand{display:flex;align-items:center;gap:12px;margin-right:auto;min-width:0;text-decoration:none;border-radius:8px;transition:opacity .15s}
+.brand:hover{opacity:.8}
+.brand__logo{height:26px;width:auto;flex:none;display:block}
+[data-theme="light"] .brand__logo--dark{display:none}
+[data-theme="dark"] .brand__logo--light{display:none}
+.brand__sep{width:1px;height:22px;background:var(--line-strong);flex:none}
+.brand__name{font-family:var(--ff-display);font-weight:600;font-size:15px;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink-soft)}
+.iconbtn{width:36px;height:36px;flex:none;display:grid;place-items:center;border-radius:10px;border:1px solid var(--line);cursor:pointer;box-shadow:var(--shadow-sm)}
+.iconbtn:hover{border-color:var(--line-strong)}
+.iconbtn svg{position:absolute;top:50%;left:50%;width:17px;height:17px;stroke:var(--ink-soft);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;transform:translate(-50%,-50%);transition:opacity .35s,transform .5s cubic-bezier(.34,1.56,.64,1)}
+[data-theme="dark"] .icon-moon{opacity:0;transform:translate(-50%,-50%) rotate(-100deg) scale(.4)}
+[data-theme="light"] .icon-sun{opacity:0;transform:translate(-50%,-50%) rotate(100deg) scale(.4)}
+
+/* ---------- Cartões ---------- */
+@keyframes panelIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.panel:not([hidden]){animation:panelIn .45s cubic-bezier(.16,1,.3,1)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+.card__kicker{font-family:var(--ff-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+
+/* ---------- Campos e botões ---------- */
+.input{display:flex;align-items:center;gap:8px;border:1px solid var(--line-strong);background:var(--surface-2);border-radius:11px;padding:0 12px;transition:border-color .15s,box-shadow .15s}
+.input:focus-within{border-color:var(--focus);box-shadow:0 0 0 3px var(--accent-soft)}
+.input__affix{font-family:var(--ff-mono);font-size:13px;color:var(--muted);flex:none}
+.input input{flex:1;min-width:0;border:0;background:transparent;padding:13px 0;font-family:var(--ff-mono);font-size:16px;font-weight:500;color:var(--ink)}
+.input input:focus{outline:none}
+.input input::placeholder{color:var(--muted);opacity:.6}
+.actions{display:flex;gap:10px;margin-top:22px;padding-top:18px;border-top:1px solid var(--line)}
+.btn{flex:1;border-radius:11px;padding:12px 14px;font-weight:600;font-size:14.5px;cursor:pointer;border:1px solid var(--line-strong)}
+.btn--primary{background:var(--accent);border-color:var(--accent);color:var(--accent-contrast)}
+.btn--primary:hover{background:var(--accent-hover);border-color:var(--accent-hover)}
+.btn--primary:disabled{opacity:.6;cursor:default}
+.btn--ghost:hover{border-color:var(--line-strong);background:var(--surface-2)}
+
+/* ---------- Hero ---------- */
+.hero{padding:40px 0 6px}
+.hero h1{font-size:clamp(26px,4.6vw,38px);line-height:1.1;max-width:24ch}
+.hero p{margin-top:12px;max-width:60ch;color:var(--ink-soft);font-size:15px}
+
+/* ---------- Medidor de risco ---------- */
+/* 3 barrinhas crescentes (tipo sinal de celular) — verde, laranja ou
+   vermelho conforme quantas estão acesas. O texto do lado é que diz o nível. */
+.risk{display:inline-flex;align-items:center;gap:8px}
+.risk__bars{display:flex;align-items:flex-end;gap:3px;height:14px}
+.risk__bar{width:5px;border-radius:2px;background:var(--line-strong)}
+.risk__bar:nth-child(1){height:6px}
+.risk__bar:nth-child(2){height:10px}
+.risk__bar:nth-child(3){height:14px}
+.risk--1 .risk__bar:nth-child(-n+1){background:var(--accent-ink)}
+.risk--2 .risk__bar:nth-child(-n+2){background:var(--warm)}
+.risk--3 .risk__bar:nth-child(-n+3){background:var(--danger)}
+.risk__label{font-family:var(--ff-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+
+/* ---------- O ponto de partida ---------- */
+.scenario{margin-top:26px;padding:20px 22px 22px}
+.scenario__grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px}
+.fact{padding:14px 16px;border:1px solid var(--line);border-radius:12px;background:var(--surface-2)}
+.fact__label{font-family:var(--ff-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.fact__value{margin-top:4px;font-family:var(--ff-display);font-weight:700;font-size:clamp(20px,2.6vw,26px);letter-spacing:-.02em;line-height:1.15}
+
+/* ---------- As opções ---------- */
+.sim__head{margin-top:40px}
+/* os títulos das seções usam o mesmo tamanho dos cartões da carteira */
+.invcard__title{font-size:clamp(21px,2.6vw,26px);line-height:1.15}
+.invcard__sub{margin-top:5px;font-size:14.5px;color:var(--ink-soft)}
+
+/* Os medidores de capital e horas. Grudam logo abaixo da barra do topo e,
+   grudados, viram uma cápsula de vidro por onde a lista passa por baixo. O
+   padding e a borda existem desde o começo (transparentes) pra nada pular de
+   lugar na hora de grudar; a margem negativa compensa o padding e mantém os
+   medidores alinhados com os cartões. */
+.meters{position:sticky;top:calc(var(--topbar-h) + 8px);z-index:10;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:20px -6px 14px;padding:6px;border:1px solid transparent;border-radius:calc(var(--radius) + 6px);transition:background .2s,border-color .2s,box-shadow .2s}
+.meters.is-stuck{background:color-mix(in srgb,var(--surface) 70%,transparent);backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);border-color:var(--line);box-shadow:var(--shadow)}
+.meter{padding:12px 14px;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);box-shadow:var(--shadow-sm)}
+.meter__top{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:2px 12px}
+.meter__label{font-family:var(--ff-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.meter__nums{font-family:var(--ff-mono);font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.meter__used{font-size:15px;font-weight:600;color:var(--ink);transition:color .2s}
+.meter__track{display:block;height:7px;margin-top:10px;border-radius:999px;background:color-mix(in srgb,var(--line-strong) 55%,transparent);overflow:hidden}
+.meter__fill{display:block;height:100%;width:0;border-radius:999px;background:var(--accent-ink);transition:width .35s cubic-bezier(.16,1,.3,1),background .2s}
+/* no limite: não cabe mais nada daquele recurso */
+.meter.is-full .meter__fill{background:var(--warm)}
+.meter.is-full .meter__used{color:var(--warm)}
+
+.optlist{display:grid;gap:12px}
+.optcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow-sm);transition:border-color .15s,background .15s,box-shadow .15s}
+.optcard:hover{border-color:var(--line-strong)}
+/* depois do :hover de propósito (mesma especificidade): escolhida continua
+   com a borda de destaque mesmo com o mouse em cima */
+.optcard.is-on{border-color:var(--accent-ink);background:var(--accent-soft);box-shadow:inset 0 0 0 1px var(--accent-ink)}
+/* o botão ocupa o cartão todo, menos o quadro do investimento */
+.optcard__toggle{width:100%;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px 16px;align-items:start;padding:18px 20px;border:0;background:transparent;border-radius:var(--radius);text-align:left;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.optcard__toggle:focus-visible{border-radius:var(--radius)}
+.optcard__check{flex:none;width:22px;height:22px;margin-top:1px;border-radius:50%;border:1.5px solid var(--line-strong);background:var(--surface);display:grid;place-items:center;transition:background .15s,border-color .15s}
+.optcard__check::after{content:"";width:13px;height:13px;background-color:var(--accent-contrast);-webkit-mask:var(--icon-check) center/contain no-repeat;mask:var(--icon-check) center/contain no-repeat;opacity:0;transition:opacity .15s}
+.optcard.is-on .optcard__check{background:var(--accent);border-color:var(--accent)}
+.optcard.is-on .optcard__check::after{opacity:1}
+.optcard__main{display:flex;flex-direction:column;gap:4px;min-width:0}
+.optcard__badge{font-family:var(--ff-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.optcard__title{font-family:var(--ff-display);font-weight:600;font-size:17px;letter-spacing:-.01em;line-height:1.3;color:var(--ink)}
+.optcard__tags{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin-top:6px}
+.tag{font-family:var(--ff-mono);font-size:12px;line-height:1.4;border:1px solid var(--line-strong);border-radius:999px;padding:3px 10px;color:var(--ink-soft)}
+.optcard.is-on .tag{background:var(--surface)}
+.optcard__income{display:flex;flex-direction:column;align-items:flex-end;gap:1px;text-align:right}
+.optcard__incomelabel{font-family:var(--ff-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.optcard__incomevalue{font-family:var(--ff-mono);font-size:17px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+.optcard.is-on .optcard__incomevalue{color:var(--accent-ink)}
+.optcard__incomeunit{font-size:12.5px;color:var(--muted)}
+
+/* ---------- Quanto investir (opções ajustáveis) ---------- */
+/* alinhado com o texto do cartão, não com o círculo de marcar */
+.investbox{margin:0 20px 20px 58px;padding:14px 16px 16px;border:1px solid var(--line-strong);border-radius:12px;background:var(--surface-2)}
+.optcard.is-on .investbox{background:var(--surface)}
+.investbox__top{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px 16px}
+.investbox__label{font-weight:500;font-size:14.5px}
+.investbox__input{width:190px;background:var(--surface)}
+.investbox__input input{padding:9px 0;font-size:15px;text-align:right;font-variant-numeric:tabular-nums}
+
+/* o trilho se pinta até o ponto escolhido (--p, calculado no options.js) */
+.range{-webkit-appearance:none;appearance:none;display:block;width:100%;height:6px;margin:20px 0 0;border-radius:999px;background:linear-gradient(90deg,var(--accent-ink) var(--p,0%),color-mix(in srgb,var(--line-strong) 60%,transparent) var(--p,0%));cursor:pointer}
+.range:focus-visible{border-radius:999px;outline-offset:8px}
+.range::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:22px;height:22px;border-radius:50%;background:var(--accent);border:3px solid var(--surface);box-shadow:0 0 0 1px var(--accent-ink),0 2px 6px rgba(39,34,89,.25);transition:transform .15s}
+.range:active::-webkit-slider-thumb{transform:scale(1.15)}
+.range::-moz-range-track{height:6px;background:transparent;border:0}
+.range::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--accent);border:3px solid var(--surface);box-shadow:0 0 0 1px var(--accent-ink),0 2px 6px rgba(39,34,89,.25)}
+.investbox__limits{display:flex;justify-content:space-between;margin-top:8px;font-family:var(--ff-mono);font-size:11.5px;color:var(--muted)}
+.investbox__calc{margin-top:12px;padding-top:12px;border-top:1px solid var(--line);font-family:var(--ff-mono);font-size:13px;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+.investbox__calc strong{color:var(--ink);font-weight:600}
+
+/* ---------- Resultado ---------- */
+.invcard{margin-top:16px;padding:20px 22px 22px;scroll-margin-top:calc(var(--topbar-h) + 16px)}
+/* o cartão recebe o foco quando aparece (é o que o leitor de tela anuncia);
+   quem vê já tem a rolagem dizendo onde está */
+.invcard:focus,.invcard:focus-visible{outline:none}
+#sec-result{margin-top:32px}
+.invcard .invcard__title{margin-top:6px}
+
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:20px}
+.stat{padding:14px 16px;border:1px solid var(--line);border-radius:12px;background:var(--surface-2)}
+.stat__label{font-family:var(--ff-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.stat__value{margin-top:6px;font-family:var(--ff-mono);font-size:22px;font-weight:600;line-height:1.15;font-variant-numeric:tabular-nums;white-space:nowrap}
+.stat__sub{margin-top:3px;font-size:12.5px;color:var(--muted)}
+.stat--hl{border-color:var(--accent-ink);background:var(--accent-soft)}
+.stat--hl .stat__value{color:var(--accent-ink)}
+
+/* uma linha por fonte de renda escolhida: o que é à esquerda, o número à direita */
+.ledger{list-style:none;margin:22px 0 0;padding:0;border-top:1px solid var(--line-strong)}
+.ledger__row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px 24px;align-items:center;padding:14px 2px;border-bottom:1px solid var(--line)}
+.ledger__main{min-width:0}
+.ledger__badge{font-family:var(--ff-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.ledger__title{margin-top:2px;font-weight:500;font-size:15px;line-height:1.4}
+.ledger__meta{margin-top:3px;font-size:13px;color:var(--ink-soft)}
+.ledger__value{text-align:right}
+.ledger__label{font-family:var(--ff-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.ledger__num{margin-top:2px;font-family:var(--ff-mono);font-size:16px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+
+.insight{margin-top:22px;padding:16px 18px;border-left:3px solid var(--accent-ink);border-radius:10px;background:color-mix(in srgb,var(--accent-ink) 8%,transparent);font-size:15px;line-height:1.6;color:var(--ink-soft)}
+[data-theme="dark"] .insight{background:color-mix(in srgb,var(--accent-ink) 10%,transparent)}
+.insight__title{margin-bottom:6px;font-family:var(--ff-display);font-weight:700;font-size:16px;letter-spacing:-.01em;color:var(--ink)}
+.insight strong{color:var(--ink);font-weight:600}
+.insight__hook{margin-top:10px;font-style:italic}
+
+/* a porta para o elemento surpresa: discreta de propósito */
+.surprise{margin-top:26px;padding-top:20px;border-top:1px dashed var(--line-strong);text-align:center}
+.surprise__text{font-size:12.5px;color:var(--muted)}
+.btn-quiet{display:inline-flex;align-items:center;gap:8px;margin-top:10px;padding:8px 14px;border:1px dashed var(--line-strong);border-radius:10px;background:transparent;font-family:var(--ff-mono);font-size:12px;letter-spacing:.04em;color:var(--muted);cursor:pointer;transition:color .15s,border-color .15s}
+.btn-quiet:hover{border-color:var(--accent-ink);color:var(--accent-ink)}
+.btn-quiet:disabled{cursor:default;color:var(--ink-soft);border-color:var(--line-strong)}
+.btn-quiet.is-loading::before{content:"";flex:none;width:12px;height:12px;border-radius:50%;border:2px solid var(--line);border-top-color:var(--accent-ink);animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ---------- Elemento surpresa: a pandemia ---------- */
+.pandemic{box-shadow:inset 0 3px 0 var(--danger),var(--shadow)}
+.pandemic__kicker{display:flex;align-items:center;gap:7px;color:var(--danger)}
+.pandemic__kicker::before{content:"";flex:none;width:13px;height:13px;background-color:currentColor;-webkit-mask:var(--icon-warning) center/contain no-repeat;mask:var(--icon-warning) center/contain no-repeat}
+
+/* o total depois da pandemia: vermelho se caiu, verde se subiu. A frase logo
+   abaixo é que diz quanto — a cor só ajuda a ver rápido. */
+.pdtotal{margin-top:20px;padding:18px 20px;border:1px solid var(--line-strong);border-radius:var(--radius);background:var(--surface-2)}
+.pdtotal__label{font-weight:600;font-size:14.5px}
+.pdtotal__value{margin-top:4px;font-family:var(--ff-mono);font-size:clamp(28px,4.4vw,36px);font-weight:600;line-height:1.1;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+.pdtotal__delta{margin-top:6px;font-size:14px;color:var(--ink-soft)}
+.pdtotal.is-down{border-color:var(--danger);background:color-mix(in srgb,var(--danger) 10%,transparent)}
+.pdtotal.is-down .pdtotal__value{color:var(--danger)}
+.pdtotal.is-up{border-color:var(--accent-ink);background:var(--accent-soft)}
+.pdtotal.is-up .pdtotal__value{color:var(--accent-ink)}
+
+.pdcompare{display:grid;grid-template-columns:repeat(2,auto);gap:24px;text-align:right}
+.ledger__num--before{color:var(--ink-soft);font-weight:500}
+.ledger__num.is-down{color:var(--danger)}
+.ledger__num.is-up{color:var(--accent-ink)}
+
+/* a nota de cada opção: o ícone e a cor dizem se ela passou bem, com
+   atenção ou mal pela pandemia (o "impact" de incomeOptions.js) */
+.pdnote{display:flex;align-items:flex-start;gap:7px;margin-top:5px;font-size:13.5px;line-height:1.45;color:var(--ink-soft)}
+.pdnote::before{content:"";flex:none;width:13px;height:13px;margin-top:2px;-webkit-mask:var(--icon-warning) center/contain no-repeat;mask:var(--icon-warning) center/contain no-repeat}
+.pdnote--manteve::before{background-color:var(--accent-ink);-webkit-mask-image:var(--icon-check);mask-image:var(--icon-check)}
+.pdnote--atencao::before{background-color:var(--warm)}
+.pdnote--grave::before{background-color:var(--danger)}
+
+/* ---------- Aviso (toast) ---------- */
+/* preso no pé da tela, pra aparecer onde a aluna estiver na lista */
+@keyframes toastIn{from{opacity:0;transform:translate(-50%,10px)}to{opacity:1;transform:translate(-50%,0)}}
+.toast{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:50;width:min(560px,calc(100% - 32px));display:flex;align-items:flex-start;gap:10px;padding:13px 12px 13px 16px;background:var(--surface);border:1px solid var(--warm);border-radius:var(--radius);box-shadow:var(--shadow)}
+.toast:not([hidden]){animation:toastIn .3s cubic-bezier(.16,1,.3,1)}
+.toast::before{content:"";flex:none;width:15px;height:15px;margin-top:3px;background-color:var(--warm);-webkit-mask:var(--icon-warning) center/contain no-repeat;mask:var(--icon-warning) center/contain no-repeat}
+.toast__text{flex:1;min-width:0;font-size:14px;line-height:1.5}
+.toast__close{flex:none;width:28px;height:28px;margin:-3px 0;display:grid;place-items:center;border:0;border-radius:8px;background:transparent;color:var(--muted);cursor:pointer;transition:color .15s,background .15s}
+.toast__close:hover{color:var(--ink);background:var(--surface-2)}
+.toast__close svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round}
+
+/* ---------- Footer ---------- */
+footer{margin-top:46px;border-top:1px solid var(--line);padding:22px 0 40px;font-size:13px;color:var(--muted);text-align:center}
+
+/* ---------- Responsive ---------- */
+@media (max-width:900px){
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:720px){
+  :root{--topbar-h:56px}
+  .wrap{padding:0 16px}
+  .topbar__in{gap:8px}
+  .brand__name,.brand__sep{display:none}
+  .actions{flex-direction:column-reverse}
+  .scenario{padding:16px 16px 18px}
+  .invcard{padding:16px 16px 18px}
+  /* grudados no alto do celular, os medidores ficam mais baixos */
+  .meters{gap:5px;padding:5px;margin:18px -5px 12px}
+  .meter{padding:10px 12px}
+  .meter__track{margin-top:8px}
+  .optcard__toggle{padding:16px}
+  .investbox{margin:0 16px 16px 16px}
+}
+
+/* Abaixo disso o cartão da opção não tem largura pra renda do lado: ela
+   desce pra baixo do texto, com o rótulo e o "por mês" na mesma linha. */
+@media (max-width:560px){
+  .scenario__grid{grid-template-columns:1fr;gap:8px}
+  .fact{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:11px 14px}
+  .fact__value{margin-top:0;font-size:18px;text-align:right}
+  /* meia tela pra cada medidor: o limite perde o "R$" (o do usado fica) */
+  .meter{padding:10px}
+  .meter__nums{font-size:12px}
+  .meter__used{font-size:13.5px}
+  .meter__cur{display:none}
+  .optcard__toggle{grid-template-columns:auto minmax(0,1fr);gap:10px 12px}
+  .optcard__title{font-size:16px}
+  .optcard__income{grid-column:2;flex-direction:row;flex-wrap:wrap;align-items:baseline;gap:2px 8px;padding-top:10px;border-top:1px dashed var(--line-strong);text-align:left}
+  .investbox{padding:12px 13px 14px}
+  .investbox__input{width:100%}
+  .stat{padding:12px 13px}
+  .stat__value{font-size:18px}
+  .ledger__row{grid-template-columns:1fr;gap:8px}
+  .ledger__value{display:flex;align-items:baseline;justify-content:space-between;gap:12px;text-align:left}
+  .pdcompare{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;text-align:left}
+  .pdtotal{padding:15px 16px}
+}
+@media (max-width:380px){
+  .stats{grid-template-columns:1fr}
+  .stat{display:grid;grid-template-columns:1fr auto;align-items:baseline;gap:0 12px}
+  .stat__value{grid-row:1 / span 2;grid-column:2;margin-top:0;align-self:center}
+  .meter__label{font-size:10px;letter-spacing:.06em}
+  /* se ainda não couber, o "/ 30.000" desce pra linha de baixo em vez de vazar */
+  .meter__nums{font-size:11.5px;white-space:normal}
+  .meter__used{font-size:13px;white-space:nowrap}
+}
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;animation:none!important}
+}
+@media print{
+  .topbar,.actions,.surprise,footer,.toast{display:none}
+  .meters{position:static}
+  body{background:#fff}
+  .card,.optcard{box-shadow:none}
+}
