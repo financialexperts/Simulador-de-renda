@@ -19,7 +19,7 @@ Não tem build, instalação nem banco de dados: é `index.html` + alguns arquiv
 
 3. **Revelar o resultado.** Mostra a renda real dos primeiros meses: o total, o capital e as horas usados, uma linha por fonte de renda e uma análise curta da escolha (diversificada ou concentrada, previsível, passiva, arriscada).
 
-4. **O elemento surpresa.** No pé do resultado há um botão discreto, "Carregar dados complementares". Ele é discreto de propósito, para a pandemia pegar a turma de surpresa. Depois de uma pausa curta, aparece a renda depois da pandemia: o total, quanto caiu e, para cada opção, o antes, o depois e o que aconteceu.
+4. **O elemento surpresa.** No pé do resultado há um botão discreto, "Carregar dados complementares". Ele é discreto de propósito, para a pandemia pegar a turma de surpresa. Depois de uma pausa curta, aparece a renda depois da pandemia: o total, quanto caiu e, para cada opção, o antes, o depois e o que aconteceu. A chegada é um susto de propósito: a tela pisca em vermelho, o painel treme e abre como um plantão urgente, com letreiro de notícias correndo.
 
 **Reiniciar simulação** volta tudo ao começo. **Mudar a combinação** depois de revelar esconde o resultado e a pandemia, porque os números da tela deixariam de valer. É só revelar de novo.
 

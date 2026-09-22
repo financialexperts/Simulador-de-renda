@@ -19,7 +19,7 @@
     var before = Sim.beforeOf(opt);
     var after = Sim.afterOf(opt);
     var dir = after < before ? "down" : after > before ? "up" : "same";
-    return '<li class="ledger__row fx">' +
+    return '<li class="ledger__row fx pdrow--' + opt.impact + '">' +
       Icons.optionTile(opt, "itile--sm") +
       '<div class="ledger__main">' +
         '<p class="ledger__badge">' + Format.esc(opt.label) + "</p>" +
@@ -65,6 +65,11 @@
       // o botão já cumpriu o papel: sai, e o foco vai pro painel
       el("res-surprise").hidden = true;
       el("sec-pandemic").hidden = false;
+      // o alarme: a tela pisca em vermelho (tira e põe a classe pra repetir)
+      var alarme = el("alarm");
+      alarme.classList.remove("is-on");
+      void alarme.offsetWidth;
+      alarme.classList.add("is-on");
       if (onReveal) onReveal(el("sec-pandemic"));
     }, PAUSA);
   }
@@ -78,6 +83,7 @@
     el("btn-pandemic-label").textContent = LABEL;
     el("res-surprise").hidden = false;
     el("sec-pandemic").hidden = true;
+    el("alarm").classList.remove("is-on");
   }
 
   function mount(revealCallback) {

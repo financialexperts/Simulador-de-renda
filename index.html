@@ -141,12 +141,25 @@
 
   <!-- ============ ELEMENTO SURPRESA ============ -->
   <section class="card invcard panel pandemic" id="sec-pandemic" tabindex="-1" aria-labelledby="pd-title" hidden>
-    <div class="head fx">
-      <span class="itile itile--red itile--lg" data-icon="virus"></span>
-      <div>
-        <p class="card__kicker pandemic__kicker">Elemento surpresa</p>
-        <h2 class="invcard__title" id="pd-title">A pandemia chegou</h2>
-        <p class="invcard__sub">O mundo mudou da noite para o dia. Como ficou a renda da Laura?</p>
+    <!-- a faixa de "plantão urgente": listras de perigo, vírus flutuando e o
+         letreiro de notícias correndo (tudo decorativo) -->
+    <div class="pdalert">
+      <div class="pdalert__viruses" aria-hidden="true">
+        <span data-icon="virus"></span><span data-icon="virus"></span><span data-icon="virus"></span><span data-icon="virus"></span><span data-icon="virus"></span>
+      </div>
+      <div class="head fx">
+        <span class="itile itile--lg pdalert__ico" data-icon="virus"></span>
+        <div>
+          <p class="pdalert__tag"><span class="pdalert__live" aria-hidden="true"></span>Urgente · Elemento surpresa</p>
+          <h2 class="invcard__title" id="pd-title">A pandemia chegou</h2>
+          <p class="invcard__sub">O mundo mudou da noite para o dia. Como ficou a renda da Laura?</p>
+        </div>
+      </div>
+    </div>
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker__track">
+        <span>Comércio fechado por decreto</span><span>Isolamento social em todo o país</span><span>Vendas despencam</span><span>Home office vira regra</span><span>Delivery bate recorde</span><span>Bolsa em queda</span>
+        <span>Comércio fechado por decreto</span><span>Isolamento social em todo o país</span><span>Vendas despencam</span><span>Home office vira regra</span><span>Delivery bate recorde</span><span>Bolsa em queda</span>
       </div>
     </div>
 
@@ -170,6 +183,9 @@
     <p>Copyright © 2026 Financial Experts.</p>
   </div>
 </footer>
+
+<!-- o "alarme": a tela pisca em vermelho quando a pandemia chega (pandemic.js) -->
+<div class="alarm" id="alarm" aria-hidden="true"></div>
 
 <!-- aviso de quando uma escolha não cabe: o toast.js mostra e esconde -->
 <div class="toast" id="toast" role="alert" hidden>

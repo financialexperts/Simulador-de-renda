@@ -432,10 +432,48 @@ input{font:inherit}
 @keyframes spin{to{transform:rotate(360deg)}}
 
 /* ---------- Elemento surpresa: a pandemia ---------- */
-.pandemic{box-shadow:inset 0 3px 0 var(--danger),var(--shadow)}
-.pandemic__kicker{color:var(--danger)}
-/* o vírus gira uma vez quando o painel aparece */
-.pandemic:not([hidden]) .head .ico--virus{animation:ico-spin 1.2s .2s cubic-bezier(.45,0,.2,1) backwards}
+/* Tem que assustar: o painel chega tremendo, com a tela piscando em vermelho
+   (o .alarm), e abre com uma faixa escura de "plantão urgente" — listras de
+   perigo, vírus flutuando, luz piscando e um letreiro de notícias correndo. */
+@keyframes pd-shake{0%,100%{transform:none}15%{transform:translateX(-7px) rotate(-.4deg)}30%{transform:translateX(6px) rotate(.3deg)}45%{transform:translateX(-4px)}60%{transform:translateX(3px)}80%{transform:translateX(-1px)}}
+.pandemic{border-color:color-mix(in srgb,var(--danger) 45%,var(--line));box-shadow:0 0 0 3px color-mix(in srgb,var(--danger) 14%,transparent),var(--shadow)}
+.pandemic:not([hidden]){animation:panelIn .45s cubic-bezier(.16,1,.3,1),pd-shake .6s .4s ease}
+
+.pdalert{position:relative;overflow:hidden;margin:-20px -22px 0;padding:26px 22px 20px;border-radius:calc(var(--radius) - 1px) calc(var(--radius) - 1px) 0 0;background:radial-gradient(120% 140% at 0% 0%,#7A1C28,#3B0D18 55%,#22081A);color:#FBE9EC}
+/* as listras de perigo no alto da faixa */
+.pdalert::before{content:"";position:absolute;left:0;right:0;top:0;height:7px;background:repeating-linear-gradient(-45deg,#FF4D5E 0 10px,#2A0A12 10px 20px);animation:pd-stripes 1s linear infinite;background-size:28.28px 7px}
+@keyframes pd-stripes{to{background-position:28.28px 0}}
+.pdalert .head{position:relative;z-index:1}
+.pdalert .invcard__title{color:#fff;font-size:clamp(24px,3.4vw,32px)}
+.pdalert .invcard__sub{color:#F4C3CB}
+.pdalert__ico{--t:#FF6B7A;--ts:rgba(255,77,94,.16);box-shadow:inset 0 0 0 1px rgba(255,107,122,.45),0 0 22px rgba(255,77,94,.45)}
+.pdalert__ico .ico{animation:ico-spin 6s linear infinite}
+.pdalert__tag{display:inline-flex;align-items:center;gap:8px;padding:4px 11px 4px 9px;border-radius:999px;background:#FF4D5E;font-family:var(--ff-mono);font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#fff}
+.pdalert__live{width:8px;height:8px;border-radius:50%;background:#fff;animation:pd-blink 1s steps(2,start) infinite}
+@keyframes pd-blink{to{visibility:hidden}}
+.pdalert .invcard__title{margin-top:10px}
+/* os vírus flutuando ao fundo */
+.pdalert__viruses span{position:absolute;color:#FF4D5E;opacity:.22;animation:pd-float 9s ease-in-out infinite}
+.pdalert__viruses .ico{width:100%;height:100%;animation:ico-spin 14s linear infinite}
+.pdalert__viruses span:nth-child(1){width:74px;height:74px;right:6%;top:-14px}
+.pdalert__viruses span:nth-child(2){width:38px;height:38px;right:24%;bottom:10px;animation-delay:-3s}
+.pdalert__viruses span:nth-child(3){width:52px;height:52px;right:40%;top:6px;opacity:.14;animation-delay:-6s}
+.pdalert__viruses span:nth-child(4){width:26px;height:26px;right:14%;bottom:34%;animation-delay:-1.5s}
+.pdalert__viruses span:nth-child(5){width:90px;height:90px;left:-24px;bottom:-40px;opacity:.12;animation-delay:-4.5s}
+@keyframes pd-float{0%,100%{transform:translate(0,0)}33%{transform:translate(-10px,8px)}66%{transform:translate(8px,-6px)}}
+
+/* o letreiro de notícias: a lista está duas vezes no HTML, então andar metade
+   da largura emenda o fim no começo sem pulo */
+.ticker{overflow:hidden;margin:0 -22px;border-top:1px solid #FF4D5E;border-bottom:1px solid var(--line);background:#16060B}
+.ticker__track{display:flex;width:max-content;animation:pd-ticker 28s linear infinite}
+.ticker__track span{display:inline-flex;align-items:center;gap:14px;padding:9px 0 9px 14px;font-family:var(--ff-mono);font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;color:#FFD7DC}
+.ticker__track span::after{content:"";width:6px;height:6px;border-radius:50%;background:#FF4D5E}
+@keyframes pd-ticker{to{transform:translateX(-50%)}}
+
+/* o alarme: a tela toda pisca em vermelho, duas vezes, e some */
+.alarm{position:fixed;inset:0;z-index:60;pointer-events:none;opacity:0;background:radial-gradient(ellipse at center,rgba(255,40,60,0) 35%,rgba(210,20,40,.55));box-shadow:inset 0 0 0 6px rgba(255,60,80,.7)}
+.alarm.is-on{animation:pd-alarm 1.6s ease-out forwards}
+@keyframes pd-alarm{0%{opacity:0}12%{opacity:1}30%{opacity:.15}45%{opacity:.85}100%{opacity:0}}
 
 /* o total depois da pandemia: vermelho se caiu, verde se subiu. A frase logo
    abaixo é que diz quanto — a cor só ajuda a ver rápido. */
@@ -458,7 +496,12 @@ input{font:inherit}
 
 /* a nota de cada opção: o ícone e a cor dizem se ela passou bem, com
    atenção ou mal pela pandemia (o "impact" de incomeOptions.js) */
-.pdnote{display:flex;align-items:flex-start;gap:7px;margin-top:5px;font-size:13.5px;line-height:1.45;color:var(--ink-soft)}
+.pdnote{display:inline-flex;align-items:flex-start;gap:7px;margin-top:7px;padding:4px 11px 4px 9px;border-radius:10px;font-size:13px;font-weight:500;line-height:1.45;color:var(--ink)}
+.pdnote--manteve{background:var(--accent-soft)}
+.pdnote--atencao{background:var(--warm-soft)}
+.pdnote--grave{background:color-mix(in srgb,var(--danger) 14%,var(--surface))}
+/* a opção que a pandemia pegou em cheio fica com o fundo avermelhado */
+.ledger__row.pdrow--grave{margin:0 -10px;padding-left:12px;padding-right:12px;border-radius:12px;background:color-mix(in srgb,var(--danger) 6%,transparent)}
 .pdnote::before{content:"";flex:none;width:13px;height:13px;margin-top:2px;-webkit-mask:var(--icon-warning) center/contain no-repeat;mask:var(--icon-warning) center/contain no-repeat}
 .pdnote--manteve::before{background-color:var(--accent-ink);-webkit-mask-image:var(--icon-check);mask-image:var(--icon-check)}
 .pdnote--atencao::before{background-color:var(--warm)}
@@ -521,6 +564,10 @@ footer{margin-top:46px;border-top:1px solid var(--line);padding:22px 0 40px;font
   .head{gap:12px}
   .head .itile--lg{width:42px;height:42px;border-radius:12px}
   .invcard{padding:16px 16px 18px}
+  .pdalert{margin:-16px -16px 0;padding:22px 16px 18px}
+  .ticker{margin:0 -16px}
+  .pdalert__viruses span:nth-child(1){width:56px;height:56px}
+  .pdalert__viruses span:nth-child(3){display:none}
   /* grudados no alto do celular, os medidores ficam mais baixos */
   .meters{gap:5px;padding:5px;margin:18px -5px 12px}
   .meter{padding:10px 12px}
